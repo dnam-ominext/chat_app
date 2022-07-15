@@ -1,11 +1,23 @@
-const express = require('express')
-const app = express()
-const port = 3000
+const express = require("express");
+const bodyParser = require("body-parser");
+const pool = require("./db")
+const loginRouter = require("./routers/loginRouter");
+const registerRouter = require("./routers/registerRouter");
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+require("dotenv").config();
+
+const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.get("/", (req, res) => {
+    res.send("Hello World")
 })
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.use("/login", loginRouter)
+app.use("/register", registerRouter)
+
+app.listen(process.env.PORT, (req, res) => {
+  console.log("Listen on port");
+});
